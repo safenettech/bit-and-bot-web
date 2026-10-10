@@ -1,7 +1,18 @@
 import type { Metadata } from "next"
+import { Inter, Oxanium } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
+
+const oxanium = Oxanium({
+  subsets: ["latin"],
+  variable: "--font-heading",
+})
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 export const metadata: Metadata = {
   title: "Bit & Bot | Digital Product Engineering & AI Studio",
@@ -27,7 +38,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased font-sans")}
+      className={cn("antialiased font-sans", inter.variable, oxanium.variable)}
     >
       <body className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary font-sans">
         <ThemeProvider>{children}</ThemeProvider>
