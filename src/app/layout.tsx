@@ -1,8 +1,6 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Navbar } from "@/components/layout/Navbar"
-import { Footer } from "@/components/layout/Footer"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
@@ -31,12 +29,8 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased font-sans")}
     >
-      <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20 selection:text-primary font-sans">
-        <ThemeProvider>
-          <Navbar />
-          <div className="flex-1">{children}</div>
-          <Footer />
-        </ThemeProvider>
+      <body className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary font-sans">
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   )
