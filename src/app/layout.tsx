@@ -31,7 +31,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased font-sans")}
     >
-      <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20 selection:text-primary">
+      <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20 selection:text-primary font-sans">
         <ThemeProvider>
           <Navbar />
           <div className="flex-1">{children}</div>

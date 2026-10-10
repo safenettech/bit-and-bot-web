@@ -15,7 +15,8 @@ export function Hero() {
           <div className="inline-flex items-center gap-2">
             <Badge variant="glow" size="lg" className="py-1.5 px-4 text-xs sm:text-sm">
               <span className="size-2 rounded-full bg-primary animate-pulse" />
-              Digital Engineering & AI Product Studio
+              {/* Digital Engineering & AI Product Studio */}
+              Your ideas our codes
             </Badge>
           </div>
 
