@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/80 backdrop-blur-md transition-all">
+    <header className="sticky top-0 z-40 w-full bg-background/80 backdrop-blur-md transition-all">
       <div className="container mx-auto flex h-16 sm:h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <Link
