@@ -6,6 +6,9 @@ export interface AdminUser {
   name: string
   role: "super_admin" | "admin" | "editor"
   avatarUrl?: string
+  createdAt?: string
+  updatedAt?: string
+  lastLoginAt?: string
 }
 
 export interface AuthSession {
@@ -96,6 +99,70 @@ export function getAdminSession(): AuthSession | null {
     return JSON.parse(raw) as AuthSession
   } catch {
     return null
+  }
+}
+
+/**
+ * Fetches the freshest admin profile data from Supabase.
+ */
+export async function fetchAdminProfile(): Promise<{
+  success: boolean
+  user?: AdminUser
+  error?: string
+}> {
+  try {
+    const res = await fetch("/api/admin/profile", {
+      method: "GET",
+      cache: "no-store",
+    })
+    const data = await res.json()
+    if (!res.ok || !data.success) {
+      return { success: false, error: data.error || "Failed to load profile" }
+    }
+    return { success: true, user: data.user }
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Failed to load profile",
+    }
+  }
+}
+
+/**
+ * Updates the admin profile in Supabase and syncs local session and headers.
+ */
+export async function updateAdminProfile(payload: {
+  name: string
+  email: string
+  password?: string
+}): Promise<{ success: boolean; user?: AdminUser; error?: string }> {
+  try {
+    const res = await fetch("/api/admin/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+    const data = await res.json()
+    if (!res.ok || !data.success) {
+      return {
+        success: false,
+        error: data.error || "Failed to update profile",
+      }
+    }
+
+    if (data.token && data.user) {
+      saveSession({ accessToken: data.token, user: data.user })
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("admin-profile-updated"))
+      }
+    }
+
+    return { success: true, user: data.user }
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Network error updating profile",
+    }
   }
 }
 

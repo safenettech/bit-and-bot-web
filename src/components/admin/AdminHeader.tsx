@@ -16,14 +16,33 @@ export function AdminHeader({
   unreadEnquiriesCount = 0,
 }: AdminHeaderProps) {
   const router = useRouter()
-  const [userName] = React.useState(() => {
+  const [userName, setUserName] = React.useState(() => {
     const session = getAdminSession()
-    return session?.user?.name || "Alex Mercer"
+    return session?.user?.name || "Bit & Bot Admin"
   })
-  const [userEmail] = React.useState(() => {
+  const [userEmail, setUserEmail] = React.useState(() => {
     const session = getAdminSession()
     return session?.user?.email || "admin@bitandbot.com"
   })
+
+  React.useEffect(() => {
+    function syncSession() {
+      const session = getAdminSession()
+      if (session?.user) {
+        setUserName(session.user.name)
+        setUserEmail(session.user.email)
+      }
+    }
+
+    syncSession()
+    window.addEventListener("admin-profile-updated", syncSession)
+    window.addEventListener("storage", syncSession)
+
+    return () => {
+      window.removeEventListener("admin-profile-updated", syncSession)
+      window.removeEventListener("storage", syncSession)
+    }
+  }, [])
 
   function handleLogout() {
     signOutAdmin()
