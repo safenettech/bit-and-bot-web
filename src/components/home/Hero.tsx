@@ -41,11 +41,11 @@ export function Hero() {
                 <DynamicIcon name="ArrowRight" size={18} className="ml-2" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto font-semibold px-8 h-12 text-base">
+            {/* <Button asChild variant="outline" size="lg" className="w-full sm:w-auto font-semibold px-8 h-12 text-base">
               <Link href="/work">
                 View Case Studies
               </Link>
-            </Button>
+            </Button> */}
           </div>
 
           {/* Key Metrics Strip */}

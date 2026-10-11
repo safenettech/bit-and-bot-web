@@ -67,14 +67,14 @@ export const footerNavigation: FooterLinkGroup[] = [
       { title: "All Capabilities", href: "/services" },
     ],
   },
-  {
-    title: "Company",
-    links: [
-      { title: "About Bit and Bot", href: "/about" },
-      { title: "Engineering Process", href: "/process" },
-      { title: "Contact Us", href: "/contact" },
-    ],
-  },
+  // {
+  //   title: "Company",
+  //   links: [
+  //     { title: "About Bit and Bot", href: "/about" },
+  //     { title: "Engineering Process", href: "/process" },
+  //     { title: "Contact Us", href: "/contact" },
+  //   ],
+  // },
   // {
   //   title: "Featured Work",
   //   links: [
@@ -90,6 +90,8 @@ export const footerNavigation: FooterLinkGroup[] = [
     links: [
       { title: "Terms of Service", href: "/terms" },
       { title: "Privacy Policy", href: "/privacy" },
+      { title: "Contact Us", href: "/contact" },
+
     ],
   },
 ]

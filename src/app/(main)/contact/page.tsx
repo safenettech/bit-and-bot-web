@@ -3,6 +3,7 @@ import { SectionHeading } from "@/components/ui/section-heading"
 import { ContactForm } from "@/components/contact/ContactForm"
 import { Card, CardContent } from "@/components/ui/card"
 import { DynamicIcon } from "@/components/ui/icon"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Contact & Project Inquiries | Bit & Bot",
@@ -71,13 +72,13 @@ export default function ContactPage() {
                 Direct Channels
               </h3>
               <div className="space-y-2 text-sm">
-                <p className="flex items-center gap-2 text-foreground">
+                <Link href="mailto:bitandbot1@gmail.com" className="flex items-center gap-2 text-foreground">
                   <DynamicIcon name="Mail" size={16} className="text-primary" />
                   <span>bitandbot1@gmail.com</span>
-                </p>
+                </Link>
                 <p className="flex items-center gap-2 text-foreground">
                   <DynamicIcon name="Globe" size={16} className="text-primary" />
-                  <span>Distributed globally • US &amp; European Hubs</span>
+                  <span>Distributed globally</span>
                 </p>
               </div>
             </div>

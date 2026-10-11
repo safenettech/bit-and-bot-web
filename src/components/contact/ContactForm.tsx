@@ -22,12 +22,12 @@ export function ContactForm() {
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      fullName: "Muhammad Safvan K V",
-      email: "msafvankv786@gmail.com",
-      company: "Acme Innovations",
-      phone: "+1 (555) 000-0000",
-      subject: "Inquiry about services",
-      message: "I am interested in learning more about your services.",
+      fullName: "",
+      email: "",
+      company: "",
+      phone: "",
+      subject: "",
+      message: "",
     },
   })
 

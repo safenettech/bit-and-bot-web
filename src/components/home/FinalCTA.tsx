@@ -34,7 +34,7 @@ export function FinalCTA() {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="w-full sm:w-auto font-semibold px-8 h-12 text-base">
-                <Link href="/work">
+                <Link href="/about">
                   View Our Portfolio
                 </Link>
               </Button>

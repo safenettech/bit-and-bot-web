@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <footer className="border-t border-border/60 bg-muted/20 text-foreground transition-colors">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-10 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-12">
           {/* Brand Info & Newsletter */}
           <div className="lg:col-span-4 flex flex-col space-y-4">
             <Link
@@ -52,7 +52,7 @@ export function Footer() {
 
           {/* Navigation Link Columns */}
           {footerNavigation.map((group) => (
-            <div key={group.title} className="flex flex-col space-y-3">
+            <div key={group.title} className="flex flex-col  space-y-3">
               <h3 className="text-sm font-semibold tracking-wider uppercase text-foreground/90">
                 {group.title}
               </h3>
