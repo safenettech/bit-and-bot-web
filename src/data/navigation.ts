@@ -88,12 +88,10 @@ export const footerNavigation: FooterLinkGroup[] = [
   //   ],
   // },
   {
-    title: "Legal & Standards",
+    title: "Legal & Policies",
     links: [
-      { title: "Privacy Policy", href: "/privacy" },
       { title: "Terms of Service", href: "/terms" },
-      { title: "Security & SOC2", href: "/security" },
-      { title: "SLA Guarantee", href: "/sla" },
+      { title: "Privacy Policy", href: "/privacy" },
     ],
   },
 ]
