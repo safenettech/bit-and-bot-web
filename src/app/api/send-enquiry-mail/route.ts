@@ -30,8 +30,8 @@ export async function POST(request: Request) {
       phone,
       subject,
       message,
-      to: process.env.EMAIL_SENDTO || "mskvgames2023@gmail.com",
-      cc: process.env.EMAIL_CCTO || "msafvankv786@gmail.com",
+      to: process.env.EMAIL_SENDTO || "bitandbot1@gmail.com",
+      cc: process.env.EMAIL_CCTO || "mskvgames2023@gmail.com",
     })
 
     if (!emailResult.success) {

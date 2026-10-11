@@ -7,9 +7,9 @@ export function Footer() {
   return (
     <footer className="border-t border-border/60 bg-muted/20 text-foreground transition-colors">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-10 lg:gap-12">
           {/* Brand Info & Newsletter */}
-          <div className="lg:col-span-2 flex flex-col space-y-4">
+          <div className="lg:col-span-4 flex flex-col space-y-4">
             <Link
               href="/"
               className="flex items-center gap-2.5 font-heading text-2xl font-bold tracking-tight text-foreground hover:opacity-90"
@@ -26,12 +26,12 @@ export function Footer() {
               We design, architect, and engineer scalable web applications, mobile platforms, and intelligent AI systems for forward-thinking enterprises.
             </p>
 
-            <div className="flex items-center gap-2 pt-2">
+            {/* <div className="flex items-center gap-2 pt-2">
               <Badge variant="outline" size="sm" className="gap-1.5 py-1">
                 <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
                 Available for Q2 & Q3 Engagements
               </Badge>
-            </div>
+            </div> */}
 
             {/* Social Links */}
             <div className="flex items-center gap-3 pt-3">
@@ -78,8 +78,8 @@ export function Footer() {
           <div className="flex items-center gap-6">
             <span>Crafted with Next.js, TypeScript & Tailwind CSS</span>
             <span className="hidden sm:inline-block">•</span>
-            <Link href="/contact" className="hover:text-foreground transition-colors">
-              support@bitandbot.com
+            <Link href="mailto:bitandbot1@gmail.com" className="hover:text-foreground transition-colors">
+              bitandbot1@gmail.com
             </Link>
           </div>
         </div>

@@ -25,16 +25,16 @@ const adminNavItems = [
     icon: "Mail",
     badge: "unread",
   },
-  {
-    title: "Projects CMS",
-    href: "/admin/dashboard#projects",
-    icon: "Layers",
-  },
-  {
-    title: "Services CMS",
-    href: "/admin/dashboard#services",
-    icon: "Cpu",
-  },
+  // {
+  //   title: "Projects CMS",
+  //   href: "/admin/dashboard#projects",
+  //   icon: "Layers",
+  // },
+  // {
+  //   title: "Services CMS",
+  //   href: "/admin/dashboard#services",
+  //   icon: "Cpu",
+  // },
   {
     title: "Admin Profile",
     href: "/admin/profile",
@@ -93,7 +93,7 @@ export function AdminSidebar({
         </div>
 
         {/* Navigation Links */}
-        <nav className="p-3 space-y-1.5">
+        <nav className="p-1 space-y-1.5">
           {adminNavItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/admin/dashboard" && pathname.startsWith(item.href))
             const isEnquiry = item.badge === "unread"
@@ -104,9 +104,9 @@ export function AdminSidebar({
                 href={item.href}
                 title={isCollapsed ? item.title : undefined}
                 className={cn(
-                  "group relative flex items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150",
+                  "group relative flex border rounded-sm items-center px-3 py-2.5 text-sm font-medium transition-all duration-150",
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                    ? "border-primary text-primary shadow-md shadow-primary/20"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground",
                   isCollapsed ? "justify-center" : "justify-between"
                 )}
@@ -117,7 +117,7 @@ export function AdminSidebar({
                     size={18}
                     className={cn(
                       "shrink-0 transition-transform group-hover:scale-110",
-                      isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"
+                      isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                     )}
                   />
                   {!isCollapsed && <span>{item.title}</span>}

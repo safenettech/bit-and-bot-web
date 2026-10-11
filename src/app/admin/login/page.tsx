@@ -68,9 +68,9 @@ export default function AdminLoginPage() {
               <CardTitle className="text-xl font-bold text-foreground">
                 Admin Sign In
               </CardTitle>
-              <Badge variant="glow" size="sm">
+              {/* <Badge variant="glow" size="sm">
                 bitbot_auth JWT
-              </Badge>
+              </Badge> */}
             </div>
             <CardDescription className="text-xs">
               Enter your authorized staff credentials to access the management portal.
@@ -98,7 +98,7 @@ export default function AdminLoginPage() {
                   id="email"
                   type="email"
                   required
-                  placeholder="admin@bitandbot.com"
+                  placeholder="sample@gamail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
@@ -125,7 +125,7 @@ export default function AdminLoginPage() {
               </div>
 
               {/* Demo Helper Pill */}
-              <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 flex items-center justify-between text-xs">
+              {/* <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">Quick test login:</span>
                 <Button
                   type="button"
@@ -136,7 +136,7 @@ export default function AdminLoginPage() {
                 >
                   Fill Demo Credentials
                 </Button>
-              </div>
+              </div> */}
             </CardContent>
 
             <CardFooter className="flex flex-col gap-3 pt-2">

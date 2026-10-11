@@ -73,7 +73,7 @@ export default function ContactPage() {
               <div className="space-y-2 text-sm">
                 <p className="flex items-center gap-2 text-foreground">
                   <DynamicIcon name="Mail" size={16} className="text-primary" />
-                  <span>hello@bitandbot.com</span>
+                  <span>bitandbot1@gmail.com</span>
                 </p>
                 <p className="flex items-center gap-2 text-foreground">
                   <DynamicIcon name="Globe" size={16} className="text-primary" />

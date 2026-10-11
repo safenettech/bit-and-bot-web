@@ -77,16 +77,16 @@ export const footerNavigation: FooterLinkGroup[] = [
       { title: "Contact Us", href: "/contact" },
     ],
   },
-  {
-    title: "Featured Work",
-    links: [
-      { title: "Club Travel", href: "/work/club-travel" },
-      { title: "PayFlow Global", href: "/work/payflow-gateway" },
-      { title: "Zenith Health", href: "/work/zenith-health" },
-      { title: "Nexus Insights", href: "/work/nexus-analytics" },
-      { title: "Aura AI Assistant", href: "/work/aura-ai" },
-    ],
-  },
+  // {
+  //   title: "Featured Work",
+  //   links: [
+  //     { title: "Club Travel", href: "/work/club-travel" },
+  //     { title: "PayFlow Global", href: "/work/payflow-gateway" },
+  //     { title: "Zenith Health", href: "/work/zenith-health" },
+  //     { title: "Nexus Insights", href: "/work/nexus-analytics" },
+  //     { title: "Aura AI Assistant", href: "/work/aura-ai" },
+  //   ],
+  // },
   {
     title: "Legal & Standards",
     links: [

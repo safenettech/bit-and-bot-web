@@ -59,14 +59,14 @@ export function getMailTransporter() {
 export async function sendEnquiryEmail(
   options: SendEnquiryMailOptions
 ): Promise<SendMailResult> {
-  const to = options.to || process.env.EMAIL_SENDTO || "mskvgames2023@gmail.com"
-  const cc = options.cc || process.env.EMAIL_CCTO || "msafvankv786@gmail.com"
+  const to = options.to || process.env.EMAIL_SENDTO || "bitandbot1@gmail.com"
+  const cc = options.cc || process.env.EMAIL_CCTO || "mskvgames2023@gmail.com"
   const authUser =
     process.env.EMAIL_USER ||
-    process.env.EMAIL_USERNAME ||
-    process.env.EMAIL_SENDTO ||
-    process.env.EMAIL_CCTO ||
-    "hello@bitandbot.com"
+    // process.env.EMAIL_USERNAME ||
+    // process.env.EMAIL_SENDTO ||
+    // process.env.EMAIL_CCTO ||
+    "bitandbot1@gmail.com"
 
   const from =
     process.env.EMAIL_FROM ||

@@ -42,7 +42,7 @@ CREATE POLICY "Allow update for admin session tracking"
 INSERT INTO public.admins (name, email, password, role, "isLoggined", is_loggined)
 VALUES (
   'Bit & Bot Admin',
-  'msafvankv786@gmail.com',
+  'bitandbot1@gmail.com',
   'admin@123',
   'super_admin',
   false,
