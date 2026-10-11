@@ -22,12 +22,12 @@ export function ContactForm() {
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      company: "",
-      phone: "",
-      subject: "",
-      message: "",
+      fullName: "Muhammad Safvan K V",
+      email: "msafvankv786@gmail.com",
+      company: "Acme Innovations",
+      phone: "+1 (555) 000-0000",
+      subject: "Inquiry about services",
+      message: "I am interested in learning more about your services.",
     },
   })
 
@@ -36,28 +36,24 @@ export function ContactForm() {
       const result = await submitEnquiry(data)
 
       if (result.success) {
-        if (result.warning) {
-          toast.info("Submission Notice", result.warning, 6000)
-        } else {
-          toast.success(
-            "Inquiry sent successfully!",
-            "Thank you! Our engineering team has received your message and will reach out shortly."
-          )
-        }
-        // Only clear the form when at least one destination processed the submission
+        // Clean, user-friendly success message
+        toast.success(
+          "Message Sent Successfully!",
+          "Thank you for contacting us. Our engineering team will review your inquiry and get back to you shortly."
+        )
         reset()
       } else {
-        // Show detailed failure toast and preserve user input
+        // Clean, user-friendly error message (technical details logged to developer console)
         toast.error(
-          "Submission Failed",
-          result.error || "Please verify your details and try again.",
-          6000
+          "Failed to Send Message",
+          "Please check your connection and try again, or email us directly at hello@bitandbot.com."
         )
       }
-    } catch {
+    } catch (err) {
+      console.error("[Developer Log] Contact form unexpected error:", err)
       toast.error(
-        "Unexpected Error",
-        "An unexpected error occurred. Please try again or reach out directly via email."
+        "Failed to Send Message",
+        "An unexpected error occurred. Please try again or email us directly at hello@bitandbot.com."
       )
     }
   }

@@ -11,10 +11,9 @@ export interface EnquirySubmissionState {
 
 export interface SubmitEnquiryResult {
   success: boolean
-  warning?: string
+  supabaseSuccess: boolean
+  emailSuccess: boolean
   error?: string
-  supabaseSuccess?: boolean
-  emailSuccess?: boolean
 }
 
 export function useEnquirySubmission() {
@@ -28,10 +27,10 @@ export function useEnquirySubmission() {
     async (data: CreateEnquiryInput): Promise<SubmitEnquiryResult> => {
       setState({ isSubmitting: true, isSuccess: false, error: null })
 
-      let supabaseErrorMsg: string | null = null
-      let emailErrorMsg: string | null = null
       let isSupabaseOk = false
       let isEmailOk = false
+      let supabaseErrorMsg: string | null = null
+      let emailErrorMsg: string | null = null
 
       // 1. Upload enquiry to Supabase via reusable data utility
       try {
@@ -39,12 +38,20 @@ export function useEnquirySubmission() {
         if (supabaseResult.success) {
           isSupabaseOk = true
         } else {
-          supabaseErrorMsg = supabaseResult.error || "Supabase submission failed"
-          console.error("Supabase submission error:", supabaseErrorMsg)
+          supabaseErrorMsg = supabaseResult.error || "Unknown Supabase error"
+          // Log detailed developer error in browser console
+          console.error(
+            "[Developer Log] Supabase insertion error:",
+            supabaseErrorMsg
+          )
         }
       } catch (err) {
-        supabaseErrorMsg = err instanceof Error ? err.message : "Supabase request failed"
-        console.error("Supabase submission error:", supabaseErrorMsg)
+        supabaseErrorMsg =
+          err instanceof Error ? err.message : "Supabase exception"
+        console.error(
+          "[Developer Log] Supabase exception:",
+          supabaseErrorMsg
+        )
       }
 
       // 2. Dispatch notification email with TO and CC via POST API
@@ -60,63 +67,54 @@ export function useEnquirySubmission() {
         if (emailResponse.ok && emailResult.success) {
           isEmailOk = true
         } else {
-          emailErrorMsg = emailResult.error || `Email failed with status ${emailResponse.status}`
-          console.error("Email dispatch error:", emailErrorMsg)
+          emailErrorMsg =
+            emailResult.error ||
+            `API responded with status ${emailResponse.status}`
+          // Log detailed developer error in browser console
+          console.error(
+            "[Developer Log] Nodemailer API dispatch error:",
+            emailErrorMsg
+          )
         }
       } catch (emailErr) {
-        emailErrorMsg = emailErr instanceof Error ? emailErr.message : "Email API network error"
-        console.error("Email dispatch error:", emailErrorMsg)
+        emailErrorMsg =
+          emailErr instanceof Error ? emailErr.message : "Email network error"
+        console.error(
+          "[Developer Log] Email API network exception:",
+          emailErrorMsg
+        )
       }
 
-      // Check outcomes strictly
-      if (!isSupabaseOk && !isEmailOk) {
-        // BOTH FAILED: Do NOT show success!
-        const combinedError = [
-          supabaseErrorMsg ? `Database: ${supabaseErrorMsg}` : null,
-          emailErrorMsg ? `Email: ${emailErrorMsg}` : null,
-        ]
-          .filter(Boolean)
-          .join(" | ")
-
-        setState({ isSubmitting: false, isSuccess: false, error: combinedError })
-        return {
-          success: false,
-          error: combinedError,
-          supabaseSuccess: false,
-          emailSuccess: false,
-        }
-      }
-
-      if (isSupabaseOk && !isEmailOk) {
-        // Saved to database, but email failed
-        const warning = `Inquiry recorded in database, but notification email could not be sent (${emailErrorMsg}).`
+      // Clean business logic:
+      // If at least one channel received the submission (Email OR Supabase):
+      // The user's inquiry was successfully delivered.
+      if (isEmailOk || isSupabaseOk) {
         setState({ isSubmitting: false, isSuccess: true, error: null })
         return {
           success: true,
-          warning,
-          supabaseSuccess: true,
-          emailSuccess: false,
+          supabaseSuccess: isSupabaseOk,
+          emailSuccess: isEmailOk,
         }
       }
 
-      if (!isSupabaseOk && isEmailOk) {
-        // Email sent, but database failed
-        const warning = `Notification email sent, but database record failed (${supabaseErrorMsg}).`
-        setState({ isSubmitting: false, isSuccess: true, error: null })
-        return {
-          success: true,
-          warning,
-          supabaseSuccess: false,
-          emailSuccess: true,
-        }
-      }
+      // If BOTH failed:
+      const devDetails = `Database: ${supabaseErrorMsg || "failed"} | Email: ${emailErrorMsg || "failed"}`
+      console.error(
+        "[Developer Log] Contact form submission failed entirely:",
+        devDetails
+      )
 
-      // BOTH SUCCEEDED
-      setState({ isSubmitting: false, isSuccess: true, error: null })
+      setState({
+        isSubmitting: false,
+        isSuccess: false,
+        error: "Failed to send message. Please try again.",
+      })
+
       return {
-        success: true,
-        supabaseSuccess: true,
-        emailSuccess: true,
+        success: false,
+        supabaseSuccess: false,
+        emailSuccess: false,
+        error: "Failed to send message. Please try again.",
       }
     },
     []
