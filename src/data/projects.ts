@@ -1,52 +1,52 @@
 import type { Project } from "@/types"
 
 export const projects: Project[] = [
-  {
-    slug: "club-travel",
-    title: "Club Travel",
-    category: "Travel Booking Platform",
-    summary:
-      "A next-generation bespoke travel booking engine and itinerary management portal for luxury clubs and frequent flyers.",
-    description:
-      "Club Travel revolutionizes luxury leisure planning with a unified booking experience. Integrating live global flight and hotel GDS feeds, dynamic group split-billing, and real-time flight delay alerts, the platform delivers an uncompromising digital concierge for premium travel clubs.",
-    image: "/projects/club-travel.jpg",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL", "Redis"],
-    features: [
-      "Real-time GDS Flight & Hotel Inventory Sync",
-      "Interactive Collaborative Group Itinerary Planner",
-      "Automated Split-Payments & Multi-Currency Checkout",
-      "Instant Flight Status Updates & SMS Re-routing Alerts",
-      "VIP Concierge Live Chat & Custom Add-on Booking",
-      "Offline-Ready Digital Boarding Passes & Itinerary Vault",
-    ],
-    client: "Club Travel International Ltd.",
-    year: "2025",
-    challenge:
-      "Legacy booking engines suffered from 8+ second search latency, brittle multi-vendor inventory lockouts, and fragmented payment reconciliations that caused an unacceptable 34% checkout drop-off rate.",
-    solution:
-      "We engineered a distributed caching tier with Redis and Next.js App Router, alongside optimistic UI updates and an automated payment orchestrator that cuts search latency down to under 600ms while guaranteeing zero double-bookings.",
-    deliverables: [
-      "Full-stack responsive booking application",
-      "Global flight/hotel aggregator microservice",
-      "Admin revenue analytics & reservation dashboard",
-      "Native mobile companion PWA",
-    ],
-    metrics: [
-      { label: "Search Latency Reduction", value: "82%" },
-      { label: "Checkout Conversion Lift", value: "+46%" },
-      { label: "Monthly Active Travelers", value: "180K+" },
-      { label: "Gross Bookings Processed", value: "$42M+" },
-    ],
-    testimonial: {
-      quote:
-        "Bit and Bot transformed our technology stack completely. Our members now book complex multi-destination itineraries in seconds, and our operational overhead dropped by nearly half.",
-      author: "Marcus Vance",
-      role: "VP of Digital Operations, Club Travel",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-    },
-    liveUrl: "https://example.com/club-travel",
-    featured: true,
-  },
+  // {
+  //   slug: "club-travel",
+  //   title: "Club Travel",
+  //   category: "Travel Booking Platform",
+  //   summary:
+  //     "A next-generation bespoke travel booking engine and itinerary management portal for luxury clubs and frequent flyers.",
+  //   description:
+  //     "Club Travel revolutionizes luxury leisure planning with a unified booking experience. Integrating live global flight and hotel GDS feeds, dynamic group split-billing, and real-time flight delay alerts, the platform delivers an uncompromising digital concierge for premium travel clubs.",
+  //   image: "/projects/club-travel.jpg",
+  //   technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL", "Redis"],
+  //   features: [
+  //     "Real-time GDS Flight & Hotel Inventory Sync",
+  //     "Interactive Collaborative Group Itinerary Planner",
+  //     "Automated Split-Payments & Multi-Currency Checkout",
+  //     "Instant Flight Status Updates & SMS Re-routing Alerts",
+  //     "VIP Concierge Live Chat & Custom Add-on Booking",
+  //     "Offline-Ready Digital Boarding Passes & Itinerary Vault",
+  //   ],
+  //   client: "Club Travel International Ltd.",
+  //   year: "2025",
+  //   challenge:
+  //     "Legacy booking engines suffered from 8+ second search latency, brittle multi-vendor inventory lockouts, and fragmented payment reconciliations that caused an unacceptable 34% checkout drop-off rate.",
+  //   solution:
+  //     "We engineered a distributed caching tier with Redis and Next.js App Router, alongside optimistic UI updates and an automated payment orchestrator that cuts search latency down to under 600ms while guaranteeing zero double-bookings.",
+  //   deliverables: [
+  //     "Full-stack responsive booking application",
+  //     "Global flight/hotel aggregator microservice",
+  //     "Admin revenue analytics & reservation dashboard",
+  //     "Native mobile companion PWA",
+  //   ],
+  //   metrics: [
+  //     { label: "Search Latency Reduction", value: "82%" },
+  //     { label: "Checkout Conversion Lift", value: "+46%" },
+  //     { label: "Monthly Active Travelers", value: "180K+" },
+  //     { label: "Gross Bookings Processed", value: "$42M+" },
+  //   ],
+  //   testimonial: {
+  //     quote:
+  //       "Bit and Bot transformed our technology stack completely. Our members now book complex multi-destination itineraries in seconds, and our operational overhead dropped by nearly half.",
+  //     author: "Marcus Vance",
+  //     role: "VP of Digital Operations, Club Travel",
+  //     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+  //   },
+  //   liveUrl: "https://example.com/club-travel",
+  //   featured: true,
+  // },
   {
     slug: "payflow-gateway",
     title: "PayFlow Global",

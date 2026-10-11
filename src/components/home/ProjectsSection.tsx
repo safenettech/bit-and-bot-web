@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { DynamicIcon } from "@/components/ui/icon"
 
 export function ProjectsSection() {
-  const featuredClubTravel = projects.find((p) => p.slug === "club-travel") || projects[0]
+  const featuredClubTravel = projects.find((p) => p.slug === "payflow-gateway") || projects[0]
   const otherProjects = projects.filter((p) => p.slug !== featuredClubTravel.slug).slice(0, 3)
 
   return (
@@ -19,7 +19,7 @@ export function ProjectsSection() {
           description="A track record of delivering resilient, high-conversion applications that solve complex technical problems and drive business growth."
         />
 
-        {/* Featured Showcase (Club Travel) */}
+        {/* Featured Showcase (Payflow Gateway) */}
         {featuredClubTravel && (
           <ProjectShowcase project={featuredClubTravel} />
         )}
