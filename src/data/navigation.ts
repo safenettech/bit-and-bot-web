@@ -33,11 +33,11 @@ export const headerNavigation: NavigationItem[] = [
       },
     ],
   },
-  {
-    title: "Work",
-    href: "/work",
-    description: "Selected case studies and digital transformation stories.",
-  },
+  // {
+  //   title: "Work",
+  //   href: "/work",
+  //   description: "Selected case studies and digital transformation stories.",
+  // },
   {
     title: "Process",
     href: "/process",
@@ -72,8 +72,6 @@ export const footerNavigation: FooterLinkGroup[] = [
     links: [
       { title: "About Bit and Bot", href: "/about" },
       { title: "Engineering Process", href: "/process" },
-      { title: "Case Studies", href: "/work" },
-      { title: "Careers", href: "/about#careers" },
       { title: "Contact Us", href: "/contact" },
     ],
   },
