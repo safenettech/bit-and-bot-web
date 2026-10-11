@@ -38,11 +38,11 @@ export function ServiceHero({ service }: ServiceHeroProps) {
                 <DynamicIcon name="ArrowRight" size={16} className="ml-2" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
+            {/* <Button asChild variant="outline" size="lg">
               <Link href="/work">
                 View Case Studies
               </Link>
-            </Button>
+            </Button> */}
           </div>
 
           <div className="flex flex-wrap gap-2 pt-6">
