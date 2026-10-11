@@ -5,7 +5,7 @@ import { DynamicIcon } from "@/components/ui/icon"
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden py-20 sm:py-28 lg:py-36">
+    <section className="relative overflow-hidden py-10 sm:py-20 lg:py-20">
       {/* Background radial gradient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] sm:size-[800px] rounded-full bg-primary/10 blur-[120px] pointer-events-none -z-10" />
 
