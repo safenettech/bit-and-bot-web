@@ -10,6 +10,9 @@ import { cn } from "@/lib/utils"
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [expandedItems, setExpandedItems] = React.useState<Record<string, boolean>>({
+    Services: true,
+  })
   const pathname = usePathname()
   const [prevPathname, setPrevPathname] = React.useState(pathname)
 
@@ -18,7 +21,7 @@ export function MobileNav() {
     setIsOpen(false)
   }
 
-  // Prevent scroll when open
+  // Prevent background scrolling when drawer is open
   React.useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"
@@ -30,74 +33,198 @@ export function MobileNav() {
     }
   }, [isOpen])
 
+  // Close on Escape key press
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false)
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [isOpen])
+
+  const toggleExpand = (title: string) => {
+    setExpandedItems((prev) => ({
+      ...prev,
+      [title]: !prev[title],
+    }))
+  }
+
   return (
     <div className="md:hidden">
+      {/* Hamburger Trigger Button */}
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Close menu" : "Open menu"}
+        onClick={() => setIsOpen(true)}
+        aria-label="Open navigation menu"
         aria-expanded={isOpen}
-        className="relative z-50 text-foreground"
+        className="text-foreground hover:bg-muted"
       >
-        <DynamicIcon name={isOpen ? "X" : "Menu"} size={22} />
+        <DynamicIcon name="Menu" size={22} />
       </Button>
 
+      {/* Side Drawer & Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col justify-between p-6 pt-24 animate-in fade-in-0 duration-200">
-          <nav className="flex flex-col space-y-4 overflow-y-auto pr-2">
-            {headerNavigation.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
-              return (
-                <div key={item.title} className="flex flex-col space-y-2">
-                  <Link
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      "text-xl font-semibold tracking-tight transition-colors py-1",
-                      isActive ? "text-primary" : "text-foreground hover:text-primary"
-                    )}
-                  >
-                    {item.title}
-                  </Link>
+        <div className="fixed inset-0 z-[100]">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in-0"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+          />
 
-                  {item.children && (
-                    <div className="pl-4 flex flex-col space-y-2 border-l border-border/60">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          onClick={() => setIsOpen(false)}
-                          className={cn(
-                            "text-sm transition-colors py-1",
-                            pathname === child.href
-                              ? "text-primary font-medium"
-                              : "text-muted-foreground hover:text-foreground"
-                          )}
-                        >
-                          {child.title}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+          {/* Side Drawer Panel */}
+          <div
+            className="fixed inset-y-0 right-0 z-[101] w-full max-w-[320px] sm:max-w-sm bg-background border-l border-border shadow-2xl flex flex-col h-full animate-in slide-in-from-right duration-300 ease-out"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile Navigation Drawer"
+          >
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+              <Link
+                href="/"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2 font-heading text-lg font-bold tracking-tight text-foreground hover:opacity-90 transition-opacity"
+              >
+                <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+                  <DynamicIcon name="Bot" size={18} />
                 </div>
-              )
-            })}
-          </nav>
-
-          <div className="pt-6 border-t border-border/60 flex flex-col gap-3">
-            <Button asChild size="lg" className="w-full font-semibold shadow-md">
-              <Link href="/contact" onClick={() => setIsOpen(false)}>
-                Start a Project
-                <DynamicIcon name="ArrowRight" size={16} className="ml-2" />
+                <span>
+                  Bit<span className="text-primary font-black mx-0.5">&</span>Bot
+                </span>
               </Link>
-            </Button>
-            <p className="text-xs text-center text-muted-foreground">
-              hello@bitandbot.com • Available Worldwide
-            </p>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close menu"
+                className="size-8 rounded-lg text-foreground hover:bg-muted"
+              >
+                <DynamicIcon name="X" size={20} />
+              </Button>
+            </div>
+
+            {/* Drawer Body - Navigation Items */}
+            <div className="flex-1 overflow-y-auto px-5 py-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-2">
+                Navigation
+              </p>
+              <nav className="flex flex-col space-y-1">
+                {headerNavigation.map((item) => {
+                  const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href + "/"))
+                  const hasChildren = Boolean(item.children && item.children.length > 0)
+                  const isExpanded = Boolean(expandedItems[item.title])
+
+                  if (hasChildren) {
+                    return (
+                      <div key={item.title} className="rounded-xl border border-border/50 bg-muted/20 overflow-hidden mb-2">
+                        <div className="flex items-center justify-between px-3 py-2.5">
+                          <Link
+                            href={item.href}
+                            onClick={() => setIsOpen(false)}
+                            className={cn(
+                              "text-base font-semibold transition-colors flex-1",
+                              isActive ? "text-primary" : "text-foreground hover:text-primary"
+                            )}
+                          >
+                            {item.title}
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => toggleExpand(item.title)}
+                            aria-label={`Toggle ${item.title} submenu`}
+                            className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                          >
+                            <DynamicIcon
+                              name="ChevronRight"
+                              size={16}
+                              className={cn(
+                                "transition-transform duration-200",
+                                isExpanded ? "rotate-90" : "rotate-0"
+                              )}
+                            />
+                          </button>
+                        </div>
+
+                        {isExpanded && item.children && (
+                          <div className="px-3 pb-2 pt-1 border-t border-border/40 flex flex-col space-y-1 bg-background/50">
+                            {item.children.map((child) => {
+                              const isChildActive = pathname === child.href
+                              return (
+                                <Link
+                                  key={child.href}
+                                  href={child.href}
+                                  onClick={() => setIsOpen(false)}
+                                  className={cn(
+                                    "flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm transition-colors",
+                                    isChildActive
+                                      ? "bg-primary/10 text-primary font-medium"
+                                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                                  )}
+                                >
+                                  <span className="size-1.5 rounded-full bg-primary/60 shrink-0" />
+                                  <span>{child.title}</span>
+                                </Link>
+                              )
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  }
+
+                  return (
+                    <Link
+                      key={item.title}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center justify-between rounded-xl px-3 py-2.5 text-base font-semibold transition-colors",
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground hover:bg-muted hover:text-primary"
+                      )}
+                    >
+                      <span>{item.title}</span>
+                      <DynamicIcon
+                        name="ChevronRight"
+                        size={14}
+                        className={isActive ? "text-primary" : "text-muted-foreground/60"}
+                      />
+                    </Link>
+                  )
+                })}
+              </nav>
+            </div>
+
+            {/* Drawer Footer */}
+            <div className="p-5 border-t border-border bg-muted/30 flex flex-col gap-3">
+              <Button asChild size="lg" className="w-full font-semibold shadow-md">
+                <Link href="/contact" onClick={() => setIsOpen(false)}>
+                  Start a Project
+                  <DynamicIcon name="ArrowRight" size={16} className="ml-2" />
+                </Link>
+              </Button>
+              <div className="flex flex-col items-center justify-center text-center">
+                <a
+                  href="mailto:hello@bitandbot.com"
+                  className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                >
+                  hello@bitandbot.com
+                </a>
+                <span className="text-[11px] text-muted-foreground/70 mt-0.5">
+                  Available for new projects worldwide
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       )}
     </div>
   )
 }
+
