@@ -49,7 +49,7 @@ export function Hero() {
           </div>
 
           {/* Key Metrics Strip */}
-          <div className="pt-12 sm:pt-16 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 border-t border-border/50 max-w-4xl mx-auto">
+          {/* <div className="pt-12 sm:pt-16 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 border-t border-border/50 max-w-4xl mx-auto">
             <div>
               <p className="font-heading text-3xl sm:text-4xl font-extrabold text-foreground">
                 99.8%
@@ -82,7 +82,7 @@ export function Hero() {
                 Client Volume Processed
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
