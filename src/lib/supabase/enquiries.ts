@@ -60,11 +60,9 @@ export async function createEnquiry(
       status: "new",
     }
 
-    const { data, error } = await client
+    const { error } = await client
       .from("enquiries")
       .insert([payload])
-      .select()
-      .single()
 
     if (error) {
       console.warn("Supabase insert to 'enquiries' returned error:", error.message)
@@ -76,7 +74,6 @@ export async function createEnquiry(
 
     return {
       success: true,
-      data: data as EnquiryRecord,
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to record enquiry"
