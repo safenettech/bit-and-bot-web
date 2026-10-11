@@ -45,7 +45,7 @@ const adminNavItems = [
 export function AdminSidebar({
   isCollapsed,
   onToggleCollapse,
-  unreadEnquiriesCount = 2,
+  unreadEnquiriesCount = 0,
 }: AdminSidebarProps) {
   const pathname = usePathname()
 

@@ -19,3 +19,16 @@ export { ThemeToggle } from "@/components/ui/theme-toggle"
 export { Avatar, type AvatarProps } from "@/components/global/Avatar"
 export { DropdownMenu, type DropdownMenuProps } from "@/components/global/DropdownMenu"
 export { toast, Toaster, type ToastItem } from "@/components/ui/toast"
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog"

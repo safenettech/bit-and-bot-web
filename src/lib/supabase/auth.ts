@@ -1,4 +1,4 @@
-import { getSupabaseEnv } from "@/lib/supabase/client"
+import { BITBOT_AUTH_COOKIE } from "@/lib/auth/jwt"
 
 export interface AdminUser {
   id: string
@@ -13,94 +13,75 @@ export interface AuthSession {
   user: AdminUser
 }
 
-const STORAGE_KEY = "bit_and_bot_admin_session"
+export { BITBOT_AUTH_COOKIE }
 
 /**
- * Sign in admin using email and password via Supabase Auth (or demo fallback if env vars unset).
+ * Sign in admin using email and password via backend login API endpoint,
+ * authenticating against Supabase `admins` table and saving JWT token `bitbot_auth`.
  */
 export async function signInWithEmail(
   email: string,
   password: string
 ): Promise<{ success: boolean; session?: AuthSession; error?: string }> {
-  // Validate basic inputs
   if (!email || !password) {
     return { success: false, error: "Please provide both email and password." }
   }
 
-  const supabaseEnv = getSupabaseEnv()
+  try {
+    const response = await fetch("/api/admin/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    })
 
-  // 1. If Supabase credentials are configured in environment variables
-  if (supabaseEnv) {
-    try {
-      const response = await fetch(`${supabaseEnv.url}/auth/v1/token?grant_type=password`, {
-        method: "POST",
-        headers: {
-          "apikey": supabaseEnv.anonKey,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      })
+    const data = await response.json()
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        return {
-          success: false,
-          error: data.error_description || data.msg || "Authentication failed with Supabase.",
-        }
-      }
-
-      const session: AuthSession = {
-        accessToken: data.access_token,
-        user: {
-          id: data.user.id,
-          email: data.user.email,
-          name: data.user.user_metadata?.full_name || email.split("@")[0],
-          role: "super_admin",
-        },
-      }
-
-      saveSession(session)
-      return { success: true, session }
-    } catch (err) {
+    if (!response.ok || !data.success) {
       return {
         success: false,
-        error: err instanceof Error ? err.message : "Failed to connect to Supabase auth service.",
+        error: data.error || "Authentication failed. Please verify credentials.",
       }
     }
-  }
 
-  // 2. Demo fallback when Supabase is not yet linked in .env.local
-  // This allows the admin interface to be explored immediately without configuration blocks.
-  if (email.toLowerCase() === "admin@bitandbot.com" && password === "admin123456") {
     const session: AuthSession = {
-      accessToken: "demo-jwt-token-preview",
+      accessToken: data.token,
       user: {
-        id: "usr_admin_01",
-        email: "admin@bitandbot.com",
-        name: "Alex Mercer",
-        role: "super_admin",
-        avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        role: data.user.role || "super_admin",
+        avatarUrl: data.user.avatarUrl,
       },
     }
 
     saveSession(session)
     return { success: true, session }
-  }
-
-  return {
-    success: false,
-    error: "Invalid email or password. (Use demo: admin@bitandbot.com / admin123456)",
+  } catch (err) {
+    return {
+      success: false,
+      error:
+        err instanceof Error ? err.message : "Failed to connect to authentication service.",
+    }
   }
 }
 
 /**
- * Sign out and clear stored admin credentials.
+ * Sign out and clear stored admin credentials and bitbot_auth cookie.
  */
-export function signOutAdmin(): void {
+export async function signOutAdmin(): Promise<void> {
+  try {
+    await fetch("/api/admin/auth/logout", { method: "POST" })
+  } catch {
+    // Continue local cleanup even if network request fails
+  }
+
   if (typeof window !== "undefined") {
-    localStorage.removeItem(STORAGE_KEY)
-    document.cookie = `${STORAGE_KEY}=; path=/; max-age=0; SameSite=Lax`
+    localStorage.removeItem(BITBOT_AUTH_COOKIE)
+    localStorage.removeItem("bit_and_bot_admin_session") // legacy fallback cleanup
+    document.cookie = `${BITBOT_AUTH_COOKIE}=; path=/; max-age=0; SameSite=Lax`
+    document.cookie = `bit_and_bot_admin_session=; path=/; max-age=0; SameSite=Lax`
   }
 }
 
@@ -110,7 +91,7 @@ export function signOutAdmin(): void {
 export function getAdminSession(): AuthSession | null {
   if (typeof window === "undefined") return null
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const raw = localStorage.getItem(BITBOT_AUTH_COOKIE)
     if (!raw) return null
     return JSON.parse(raw) as AuthSession
   } catch {
@@ -123,7 +104,7 @@ export function getAdminSession(): AuthSession | null {
  */
 function saveSession(session: AuthSession): void {
   if (typeof window !== "undefined") {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(session))
-    document.cookie = `${STORAGE_KEY}=${session.accessToken}; path=/; max-age=604800; SameSite=Lax`
+    localStorage.setItem(BITBOT_AUTH_COOKIE, JSON.stringify(session))
+    document.cookie = `${BITBOT_AUTH_COOKIE}=${session.accessToken}; path=/; max-age=604800; SameSite=Lax`
   }
 }

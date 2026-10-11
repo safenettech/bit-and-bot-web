@@ -18,11 +18,16 @@ export default function AdminLoginPage() {
     setIsLoading(true)
     setErrorMessage(null)
 
-    // Authenticate with Supabase Auth (or demo credentials fallback)
+    // Authenticate with bitbot_auth JWT
     const result = await signInWithEmail(email, password)
 
     if (result.success) {
-      router.push("/admin/dashboard")
+      const target =
+        typeof window !== "undefined"
+          ? new URLSearchParams(window.location.search).get("redirect") ||
+            "/admin/dashboard"
+          : "/admin/dashboard"
+      router.push(target)
     } else {
       setErrorMessage(result.error || "Authentication failed. Please verify credentials.")
       setIsLoading(false)
@@ -64,7 +69,7 @@ export default function AdminLoginPage() {
                 Admin Sign In
               </CardTitle>
               <Badge variant="glow" size="sm">
-                Supabase Auth
+                bitbot_auth JWT
               </Badge>
             </div>
             <CardDescription className="text-xs">

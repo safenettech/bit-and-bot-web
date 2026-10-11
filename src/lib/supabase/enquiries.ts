@@ -1,4 +1,5 @@
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { type Enquiry } from "@/data/enquiries"
 
 export interface CreateEnquiryInput {
   fullName: string
@@ -28,6 +29,8 @@ export interface EnquiryRecord {
 export interface EnquiryResponse<T = unknown> {
   success: boolean
   data?: T
+  count?: number
+  unreadCount?: number
   error?: string
 }
 
@@ -60,9 +63,7 @@ export async function createEnquiry(
       status: "new",
     }
 
-    const { error } = await client
-      .from("enquiries")
-      .insert([payload])
+    const { error } = await client.from("enquiries").insert([payload])
 
     if (error) {
       console.warn("Supabase insert to 'enquiries' returned error:", error.message)
@@ -86,56 +87,56 @@ export async function createEnquiry(
 }
 
 /**
- * Fetches all enquiries ordered by newest first.
+ * Fetches all dynamic enquiries for the admin inbox.
+ * Calls /api/admin/enquiries with session credentials.
  */
-export async function getEnquiries(): Promise<EnquiryResponse<EnquiryRecord[]>> {
-  const client = getSupabaseBrowserClient()
-  if (!client) {
-    return { success: false, error: "Supabase not configured." }
-  }
-
+export async function fetchAdminEnquiries(): Promise<EnquiryResponse<Enquiry[]>> {
   try {
-    const { data, error } = await client
-      .from("enquiries")
-      .select("*")
-      .order("created_at", { ascending: false })
+    const res = await fetch("/api/admin/enquiries", {
+      method: "GET",
+      cache: "no-store",
+    })
 
-    if (error) {
-      return { success: false, error: error.message }
+    const result = await res.json()
+    if (!res.ok || !result.success) {
+      return {
+        success: false,
+        error: result.error || "Failed to fetch enquiries",
+        data: [],
+      }
     }
 
-    return { success: true, data: data as EnquiryRecord[] }
+    return {
+      success: true,
+      data: result.data as Enquiry[],
+      count: result.count,
+      unreadCount: result.unreadCount,
+    }
   } catch (err) {
     return {
       success: false,
       error: err instanceof Error ? err.message : "Failed to fetch enquiries",
+      data: [],
     }
   }
 }
 
 /**
- * Updates enquiry status.
+ * Updates an enquiry's status or read state.
  */
-export async function updateEnquiryStatus(
+export async function updateAdminEnquiry(
   id: string,
-  status: EnquiryRecord["status"]
+  params: { status?: string; isRead?: boolean }
 ): Promise<EnquiryResponse> {
-  const client = getSupabaseBrowserClient()
-  if (!client) {
-    return { success: false, error: "Supabase not configured." }
-  }
-
   try {
-    const { error } = await client
-      .from("enquiries")
-      .update({ status })
-      .eq("id", id)
+    const res = await fetch("/api/admin/enquiries", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, ...params }),
+    })
 
-    if (error) {
-      return { success: false, error: error.message }
-    }
-
-    return { success: true }
+    const result = await res.json()
+    return result
   } catch (err) {
     return {
       success: false,
@@ -145,20 +146,18 @@ export async function updateEnquiryStatus(
 }
 
 /**
- * Deletes an enquiry by ID.
+ * Deletes a single enquiry by ID.
  */
-export async function deleteEnquiry(id: string): Promise<EnquiryResponse> {
-  const client = getSupabaseBrowserClient()
-  if (!client) {
-    return { success: false, error: "Supabase not configured." }
-  }
-
+export async function deleteAdminEnquiry(id: string): Promise<EnquiryResponse> {
   try {
-    const { error } = await client.from("enquiries").delete().eq("id", id)
-    if (error) {
-      return { success: false, error: error.message }
-    }
-    return { success: true }
+    const res = await fetch("/api/admin/enquiries", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    })
+
+    const result = await res.json()
+    return result
   } catch (err) {
     return {
       success: false,
@@ -166,3 +165,70 @@ export async function deleteEnquiry(id: string): Promise<EnquiryResponse> {
     }
   }
 }
+
+/**
+ * Bulk updates multiple enquiries.
+ */
+export async function bulkUpdateAdminEnquiries(
+  ids: string[],
+  params: { status?: string; isRead?: boolean }
+): Promise<EnquiryResponse> {
+  try {
+    const res = await fetch("/api/admin/enquiries", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids, ...params }),
+    })
+
+    const result = await res.json()
+    return result
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Failed to bulk update enquiries",
+    }
+  }
+}
+
+/**
+ * Bulk deletes multiple enquiries.
+ */
+export async function bulkDeleteAdminEnquiries(ids: string[]): Promise<EnquiryResponse> {
+  try {
+    const res = await fetch("/api/admin/enquiries", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    })
+
+    const result = await res.json()
+    return result
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Failed to bulk delete enquiries",
+    }
+  }
+}
+
+/**
+ * Backward compatibility helpers for use-supabase hook
+ */
+export async function getEnquiries(): Promise<EnquiryResponse<EnquiryRecord[]>> {
+  const res = await fetchAdminEnquiries()
+  return {
+    success: res.success,
+    data: (res.data as unknown as EnquiryRecord[]) || [],
+    error: res.error,
+  }
+}
+
+export async function updateEnquiryStatus(
+  id: string,
+  status: EnquiryRecord["status"]
+): Promise<EnquiryResponse> {
+  return updateAdminEnquiry(id, { status })
+}
+
+export const deleteEnquiry = deleteAdminEnquiry
+

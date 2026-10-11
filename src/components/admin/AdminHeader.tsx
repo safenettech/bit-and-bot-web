@@ -8,9 +8,13 @@ import { Avatar, DropdownMenu, ThemeToggle, DynamicIcon, Badge } from "@/compone
 
 export interface AdminHeaderProps {
   onToggleSidebar?: () => void
+  unreadEnquiriesCount?: number
 }
 
-export function AdminHeader({ onToggleSidebar }: AdminHeaderProps) {
+export function AdminHeader({
+  onToggleSidebar,
+  unreadEnquiriesCount = 0,
+}: AdminHeaderProps) {
   const router = useRouter()
   const [userName] = React.useState(() => {
     const session = getAdminSession()
@@ -62,12 +66,14 @@ export function AdminHeader({ onToggleSidebar }: AdminHeaderProps) {
         <Link
           href="/admin/enquiries"
           className="relative flex size-9 items-center justify-center rounded-full border border-border/60 bg-card text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-          title="2 unread enquiries"
+          title={`${unreadEnquiriesCount} unread enquiries`}
         >
           <DynamicIcon name="Mail" size={16} />
-          <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-primary text-[0.6rem] font-bold text-primary-foreground">
-            2
-          </span>
+          {unreadEnquiriesCount > 0 && (
+            <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-primary text-[0.6rem] font-bold text-primary-foreground animate-in zoom-in-50 duration-150">
+              {unreadEnquiriesCount > 99 ? "99+" : unreadEnquiriesCount}
+            </span>
+          )}
         </Link>
 
         {/* User Menu Dropdown */}
