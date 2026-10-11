@@ -19,18 +19,31 @@ export interface SendMailResult {
 
 /**
  * Creates reusable Nodemailer transporter using environment variables.
+ * Automatically adapts for Gmail service or standard SMTP servers.
  */
 export function getMailTransporter() {
-  const host = process.env.EMAIL_SERVER || "smtp.mailtrap.io"
-  const port = Number(process.env.EMAIL_PORT) || 2525
-  const pass = process.env.EMAIL_PASSWORD || ""
-  // Fall back to EMAIL_CCTO or EMAIL_SENDTO if EMAIL_USER is not explicitly provided
+  const host = process.env.EMAIL_SERVER || "smtp.gmail.com"
+  const port = Number(process.env.EMAIL_PORT) || 465
+  const rawPass = process.env.EMAIL_PASSWORD || ""
+  const pass = rawPass.trim()
   const user =
     process.env.EMAIL_USER ||
     process.env.EMAIL_USERNAME ||
-    process.env.EMAIL_CCTO ||
     process.env.EMAIL_SENDTO ||
+    process.env.EMAIL_CCTO ||
     ""
+
+  const isGmail =
+    host.includes("gmail") ||
+    user.endsWith("@gmail.com") ||
+    /^[a-z]{4}\s[a-z]{4}\s[a-z]{4}\s[a-z]{4}$/.test(rawPass.trim())
+
+  if (isGmail && user && pass) {
+    return nodemailer.createTransport({
+      service: "gmail",
+      auth: { user, pass },
+    })
+  }
 
   return nodemailer.createTransport({
     host,
@@ -48,9 +61,16 @@ export async function sendEnquiryEmail(
 ): Promise<SendMailResult> {
   const to = options.to || process.env.EMAIL_SENDTO || "mskvgames2023@gmail.com"
   const cc = options.cc || process.env.EMAIL_CCTO || "msafvankv786@gmail.com"
+  const authUser =
+    process.env.EMAIL_USER ||
+    process.env.EMAIL_USERNAME ||
+    process.env.EMAIL_SENDTO ||
+    process.env.EMAIL_CCTO ||
+    "hello@bitandbot.com"
+
   const from =
     process.env.EMAIL_FROM ||
-    `"Bit & Bot Notifications" <${process.env.EMAIL_CCTO || "hello@bitandbot.com"}>`
+    `"Bit & Bot Notifications" <${authUser}>`
 
   const transporter = getMailTransporter()
 

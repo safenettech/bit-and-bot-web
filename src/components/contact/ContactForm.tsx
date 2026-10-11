@@ -36,21 +36,27 @@ export function ContactForm() {
       const result = await submitEnquiry(data)
 
       if (result.success) {
-        toast.success(
-          "Inquiry sent successfully!",
-          "Thank you! Our engineering team has received your message and will reach out shortly."
-        )
-        // Clear form fields after successful submit
+        if (result.warning) {
+          toast.info("Submission Notice", result.warning, 6000)
+        } else {
+          toast.success(
+            "Inquiry sent successfully!",
+            "Thank you! Our engineering team has received your message and will reach out shortly."
+          )
+        }
+        // Only clear the form when at least one destination processed the submission
         reset()
       } else {
+        // Show detailed failure toast and preserve user input
         toast.error(
-          "Submission failed",
-          result.error || "Please verify your details and try again."
+          "Submission Failed",
+          result.error || "Please verify your details and try again.",
+          6000
         )
       }
     } catch {
       toast.error(
-        "Unexpected error",
+        "Unexpected Error",
         "An unexpected error occurred. Please try again or reach out directly via email."
       )
     }
