@@ -68,12 +68,6 @@ export async function sendEnquiryEmail(
     // process.env.EMAIL_CCTO ||
     "bitandbot1@gmail.com"
 
-  const from =
-    process.env.EMAIL_FROM ||
-    `"Bit & Bot Notifications" <${authUser}>`
-
-  const transporter = getMailTransporter()
-
   const safeFullName = options.fullName.trim()
   const safeEmail = options.email.trim()
   const safeCompany = options.company?.trim() || "Not provided"
@@ -81,6 +75,10 @@ export async function sendEnquiryEmail(
   const safeSubject = options.subject.trim()
   const safeMessage = options.message.trim()
   const timestamp = new Date().toUTCString()
+
+  const cleanSenderName = `BitAndBot: ${safeFullName.replace(/["\r\n]/g, "").trim() || "Client Enquiry"}`
+  const from = process.env.EMAIL_FROM || `"${cleanSenderName}" <${authUser}>`
+  const transporter = getMailTransporter()
 
   const htmlContent = `
 <!DOCTYPE html>
@@ -162,7 +160,7 @@ CC: ${cc}
       from,
       to,
       cc,
-      replyTo: safeEmail,
+      replyTo: `"${safeFullName.replace(/["\r\n]/g, "").trim()}" <${safeEmail}>`,
       subject: `[Bit & Bot Enquiry] ${safeSubject} - from ${safeFullName}`,
       text: textContent,
       html: htmlContent,
