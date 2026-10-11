@@ -17,19 +17,19 @@ export const headerNavigation: NavigationItem[] = [
         description: "Native iOS & Android apps with 120 FPS performance.",
       },
       {
-        title: "UI/UX Design",
+        title: "UI/UX & Poster Design",
         href: "/services/ui-ux-design",
-        description: "Design systems, user research & interactive prototypes.",
+        description: "Figma design systems, interactive prototypes & poster designing.",
       },
       {
         title: "Backend & API Architecture",
         href: "/services/backend-api",
-        description: "Scalable microservices, distributed databases & APIs.",
+        description: "Node.js & Express REST APIs, Supabase, MongoDB & cloud hosting.",
       },
       {
-        title: "Custom Enterprise Software",
+        title: "Custom Business Software",
         href: "/services/custom-software",
-        description: "Bespoke ERP, CRM & operational automation engines.",
+        description: "Bespoke operational tools, portals & automated workflows.",
       },
     ],
   },
@@ -61,7 +61,7 @@ export const footerNavigation: FooterLinkGroup[] = [
     links: [
       { title: "Web Development", href: "/services/web-development" },
       { title: "Mobile Development", href: "/services/mobile-development" },
-      { title: "UI/UX Design", href: "/services/ui-ux-design" },
+      { title: "UI/UX & Poster Design", href: "/services/ui-ux-design" },
       { title: "Backend & APIs", href: "/services/backend-api" },
       { title: "Custom Software", href: "/services/custom-software" },
       { title: "All Capabilities", href: "/services" },

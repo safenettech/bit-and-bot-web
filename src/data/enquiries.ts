@@ -75,9 +75,9 @@ export const initialEnquiries: Enquiry[] = [
     phone: "+1 (212) 555-8832",
     serviceType: "Backend & API Architecture",
     budget: "$100,000+",
-    subject: "High-Throughput FIX Protocol & Kafka Streaming Microservices",
+    subject: "Node.js & Express Real-Time API Architecture",
     message:
-      "Bit & Bot squad,\n\nWe need to build a distributed market-data aggregation engine in Go and Apache Kafka capable of ingesting 30,000 ticks/sec with sub-millisecond serialization.\n\nDo you have capacity to take on a dedicated senior squad starting next month? Let us know if you can sign our standard mutual NDA before we jump on a Zoom call.\n\nLiam Thorne\nPartner & Head of Technology",
+      "Bit & Bot team,\n\nWe need to build a high-performance REST and real-time API backend using Node.js, Express.js, and Supabase for our platform.\n\nDo you have capacity to take on this build starting next month? Let us know if you can jump on a quick call.\n\nLiam Thorne\nPartner & Head of Technology",
     date: "Oct 7",
     timestamp: "2026-10-07T11:20:00Z",
     isRead: true,

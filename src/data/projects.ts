@@ -10,7 +10,7 @@ export const projects: Project[] = [
   //   description:
   //     "Club Travel revolutionizes luxury leisure planning with a unified booking experience. Integrating live global flight and hotel GDS feeds, dynamic group split-billing, and real-time flight delay alerts, the platform delivers an uncompromising digital concierge for premium travel clubs.",
   //   image: "/projects/club-travel.jpg",
-  //   technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL", "Redis"],
+  //   technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Supabase"],
   //   features: [
   //     "Real-time GDS Flight & Hotel Inventory Sync",
   //     "Interactive Collaborative Group Itinerary Planner",
@@ -24,7 +24,7 @@ export const projects: Project[] = [
   //   challenge:
   //     "Legacy booking engines suffered from 8+ second search latency, brittle multi-vendor inventory lockouts, and fragmented payment reconciliations that caused an unacceptable 34% checkout drop-off rate.",
   //   solution:
-  //     "We engineered a distributed caching tier with Redis and Next.js App Router, alongside optimistic UI updates and an automated payment orchestrator that cuts search latency down to under 600ms while guaranteeing zero double-bookings.",
+  //     "We engineered a distributed caching tier with Supabase and Next.js App Router, alongside optimistic UI updates and an automated payment orchestrator that cuts search latency down to under 600ms while guaranteeing zero double-bookings.",
   //   deliverables: [
   //     "Full-stack responsive booking application",
   //     "Global flight/hotel aggregator microservice",
@@ -54,9 +54,9 @@ export const projects: Project[] = [
     summary:
       "High-throughput cross-border payments orchestrator processing multi-currency settlements with sub-second finality.",
     description:
-      "PayFlow Global simplifies cross-border enterprise settlements. Built with Go microservices and event-driven architecture, it connects regional payment rails, validates AML compliance automatically, and provides real-time treasury management for multinational businesses.",
+      "PayFlow Global simplifies cross-border enterprise settlements. Built with Node.js and Express microservices, it connects regional payment rails, validates compliance automatically, and provides real-time treasury management for multinational businesses.",
     image: "/projects/payflow.jpg",
-    technologies: ["Go", "TypeScript", "React", "PostgreSQL", "Kafka", "Docker", "AWS"],
+    technologies: ["Node.js", "Express.js", "TypeScript", "React", "Supabase", "Docker", "AWS"],
     features: [
       "Instant Multi-Currency FX Settlement Engine",
       "Automated Anti-Money Laundering (AML) Screening",
@@ -68,9 +68,9 @@ export const projects: Project[] = [
     client: "PayFlow Financial Inc.",
     year: "2025",
     challenge:
-      "The client required an ultra-low latency transaction processing engine capable of sustaining 15,000 transactions per second during flash sales with zero data loss and strict regulatory compliance.",
+      "The client required an ultra-low latency transaction processing engine capable of sustaining high volume during sales with zero data loss and strict regulatory compliance.",
     solution:
-      "We designed an event-sourced distributed ledger using Apache Kafka and Go, paired with idempotent transaction workers and partitioned PostgreSQL databases that achieve 99.999% uptime.",
+      "We designed an event-sourced distributed pipeline using Node.js, paired with idempotent transaction workers and partitioned Supabase databases that achieve 99.999% uptime.",
     deliverables: [
       "Core payment gateway engine & SDKs",
       "Merchant onboarding & verification portal",
@@ -102,7 +102,7 @@ export const projects: Project[] = [
     description:
       "Zenith Health connects over 80,000 patients with board-certified physicians. Featuring encrypted video consultations, automated prescription dispatch to local pharmacies, and seamless integration with existing hospital EHR systems.",
     image: "/projects/zenith-health.jpg",
-    technologies: ["Next.js", "React Native", "WebRTC", "FastAPI", "PostgreSQL", "Tailwind CSS"],
+    technologies: ["Next.js", "React Native", "Node.js", "Express.js", "Supabase", "Tailwind CSS"],
     features: [
       "End-to-End Encrypted WebRTC Video Consultations",
       "FHIR/HL7 Compliant EHR Integration",
@@ -148,7 +148,7 @@ export const projects: Project[] = [
     description:
       "Nexus Insights empowers product teams to track user behavior, cohort funnels, and retention curves in real time. Built with high-speed columnar data storage and lightweight web SDKs for sub-millisecond event capture.",
     image: "/projects/nexus-analytics.jpg",
-    technologies: ["Next.js", "TypeScript", "ClickHouse", "Rust", "Tailwind CSS", "Chart.js"],
+    technologies: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS", "Docker"],
     features: [
       "Sub-Second Ad-Hoc Funnel & Cohort Queries",
       "Lightweight 3KB Tracking SDK with Offline Batching",
@@ -160,12 +160,12 @@ export const projects: Project[] = [
     client: "Nexus SaaS Corp",
     year: "2024",
     challenge:
-      "Traditional analytics warehouses were running out of memory on billion-row queries, causing dashboard timeouts and astronomical cloud query bills for the client.",
+      "Traditional analytics warehouses were running out of memory on complex queries, causing dashboard timeouts and high hosting bills for the client.",
     solution:
-      "We migrated the ingestion pipeline to ClickHouse with a Rust event collector, coupled with Next.js streaming charts that render billion-row aggregations in under 200ms.",
+      "We optimized the ingestion pipeline with MongoDB aggregation pipelines and Node.js stream workers, coupled with Next.js charts that render large datasets smoothly.",
     deliverables: [
       "Interactive data analytics web application",
-      "Rust tracking collector service",
+      "Node.js tracking collector service",
       "Client JavaScript / React tracking libraries",
       "Embedded shareable reports generator",
     ],
@@ -194,7 +194,7 @@ export const projects: Project[] = [
     description:
       "Logix ERP replaced fragmented legacy software with a centralized real-time inventory management platform. Features RFID scanner integration, automated purchase order triggers, and dynamic truck route optimization.",
     image: "/projects/logix-erp.jpg",
-    technologies: ["React", "TypeScript", "Python", "PostgreSQL", "Redis", "Docker"],
+    technologies: ["React.js", "TypeScript", "Node.js", "Express.js", "MongoDB", "Docker"],
     features: [
       "Real-Time RFID Warehouse Bin Tracking",
       "Automated Reorder Algorithm & Supplier PO Dispatch",
@@ -240,7 +240,7 @@ export const projects: Project[] = [
     description:
       "Aura AI connects company knowledge repositories directly into customer communication channels. Using hybrid vector search and structured tool-calling, Aura resolves complex customer queries and issues refunds autonomously.",
     image: "/projects/aura-ai.jpg",
-    technologies: ["Next.js", "Python", "FastAPI", "pgvector", "LangChain", "OpenAI"],
+    technologies: ["Next.js", "Node.js", "Express.js", "Supabase", "AI Integration", "OpenAI"],
     features: [
       "Autonomous Tool-Calling for Refunds & Re-bookings",
       "Hybrid Semantic & Keyword Knowledge Base Search",
@@ -254,11 +254,11 @@ export const projects: Project[] = [
     challenge:
       "Customer support teams were overwhelmed with 40,000 weekly tickets, causing 48-hour response delays and skyrocketing headcount expenses without improving CSAT scores.",
     solution:
-      "We deployed a deterministic multi-agent RAG workflow with semantic caching and safe API tool execution that resolves routine tickets in under 5 seconds while escalating complex nuances gracefully.",
+      "We deployed an AI workflow with Node.js and OpenAI API tool execution that resolves routine tickets in under 5 seconds while escalating complex nuances gracefully.",
     deliverables: [
       "Embedded AI chat widget and customer dashboard",
-      "Vector search indexing pipeline with pgvector",
-      "Agent orchestration microservice",
+      "Vector search indexing pipeline with Supabase",
+      "Node.js AI API microservice",
       "Human-in-the-loop escalation portal",
     ],
     metrics: [

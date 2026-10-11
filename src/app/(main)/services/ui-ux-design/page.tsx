@@ -6,9 +6,9 @@ import { ServiceFeatures } from "@/components/services/ServiceFeatures"
 import { FinalCTA } from "@/components/home/FinalCTA"
 
 export const metadata: Metadata = {
-  title: "UI/UX Design & Design Systems | Bit & Bot",
+  title: "UI/UX & Poster Design | Bit & Bot",
   description:
-    "Conversion-focused product design, interactive prototypes, and unified multi-brand design systems.",
+    "Figma UI/UX wireframes, interactive prototypes, design systems, and creative digital poster designing for marketing & promotions.",
 }
 
 export default function UIUXDesignPage() {

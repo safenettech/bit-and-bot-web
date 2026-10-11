@@ -45,7 +45,7 @@ const corePrinciples = [
     icon: "Layers",
     title: "Pragmatic Architecture",
     description:
-      "We build with modern, production-proven technologies (Next.js, TypeScript, PostgreSQL, Supabase, Tailwind CSS) for speed, security, and effortless scaling.",
+      "We build with modern, production-proven technologies (Next.js, React.js, Node.js, Express.js, Supabase, MongoDB, Tailwind CSS) for speed, reliability, and effortless scaling.",
   },
   {
     icon: "Rocket",
@@ -68,10 +68,12 @@ const corePrinciples = [
 ]
 
 const techStack = [
-  { category: "Web Engineering", items: ["Next.js (App Router)", "React", "TypeScript", "Tailwind CSS"] },
-  { category: "Backend & Data", items: ["Node.js", "PostgreSQL", "Supabase", "REST APIs & Webhooks"] },
-  { category: "Mobile Development", items: ["React Native", "iOS & Android Builds", "Offline Storage", "Push Alerts"] },
-  { category: "UI/UX & Systems", items: ["Figma Wireframes", "Design Tokens", "Dark/Light Modes", "Mobile-First UX"] },
+  { category: "Web Engineering", items: ["Next.js", "React.js", "TypeScript", "Tailwind CSS", "Bootstrap", "HTML & CSS"] },
+  { category: "Mobile Apps", items: ["React Native", "Expo", "Flutter", "iOS & Android"] },
+  { category: "Backend & Data", items: ["Node.js", "Express.js", "Supabase", "MongoDB", "REST APIs"] },
+  { category: "Cloud & Hosting", items: ["AWS", "Hostinger", "Docker"] },
+  { category: "UI/UX & Creative", items: ["Figma Wireframes", "Poster Designing", "Marketing Banners", "Responsive UI"] },
+  { category: "AI Integration", items: ["OpenAI & Gemini APIs", "AI In-App Assistants", "Smart Prompt Workflows"] },
 ]
 
 const collaborativeProcess = [

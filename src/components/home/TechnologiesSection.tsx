@@ -4,16 +4,16 @@ import { TechnologyItem } from "@/components/technologies/TechnologyItem"
 
 export function TechnologiesSection() {
   return (
-    <section className="py-20 sm:py-28 lg:py-32">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <section className="py-10 sm:py-14 border-b border-border/40">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
         <SectionHeading
-          badge="Modern Tech Stack"
+          badge="Our Tech Stack"
           title="Battle-Tested Tools &amp; Modern Frameworks"
-          description="We avoid legacy bloat. Our engineering squads leverage type-safe languages, cloud-native runtimes, and proven foundational frameworks."
+          description="We work with proven, high-performance web, mobile, database, and hosting technologies to deliver fast, reliable results."
         />
 
         {/* Categorized Tech Grid */}
-        <div className="space-y-12">
+        <div className="space-y-8 sm:space-y-10">
           {technologyCategories.map((category) => {
             const categoryTechs = technologies.filter((t) => t.category === category)
             if (categoryTechs.length === 0) return null
