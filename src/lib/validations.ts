@@ -9,7 +9,7 @@ export const contactSchema = z.object({
     .string()
     .email({ message: "Please provide a valid business email address." }),
   company: z.string().max(100).optional().or(z.literal("")),
-  phone: z.string().max(25).optional().or(z.literal("")),
+  phone: z.string().max(25).min(3, { message: "Phone number must be at least 3 characters." }),
   subject: z
     .string()
     .min(3, { message: "Subject must be at least 3 characters." })
