@@ -1,18 +1,15 @@
+"use client"
+
+import * as React from "react"
 import Link from "next/link"
-import type { Metadata } from "next"
-import { initialEnquiries } from "@/data/enquiries"
+import { useAdminEnquiries } from "@/context/admin-enquiries-context"
 import { projects } from "@/data/projects"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/global"
 import { Button, Badge, DynamicIcon } from "@/components/global"
 
-export const metadata: Metadata = {
-  title: "Admin Dashboard | Bit & Bot Control Center",
-  description: "Executive operations, pipeline analytics, and project overview.",
-}
-
 export default function AdminDashboardPage() {
-  const unreadCount = initialEnquiries.filter((e) => !e.isRead).length
-  const recentEnquiries = initialEnquiries.slice(0, 4)
+  const { enquiries, unreadCount, isLoading } = useAdminEnquiries()
+  const recentEnquiries = enquiries.slice(0, 4)
 
   return (
     <div className="space-y-8 animate-in fade-in-0 duration-300">
@@ -58,11 +55,11 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent className="p-5 pt-0">
             <div className="font-heading text-3xl font-extrabold text-foreground">
-              48
+              {isLoading && enquiries.length === 0 ? "..." : enquiries.length}
             </div>
             <div className="flex items-center gap-1.5 text-xs text-emerald-500 font-medium mt-1">
               <DynamicIcon name="TrendingUp" size={13} />
-              <span>+18% from last month</span>
+              <span>Real-time from Supabase</span>
             </div>
           </CardContent>
         </Card>
@@ -79,7 +76,7 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent className="p-5 pt-0">
             <div className="font-heading text-3xl font-extrabold text-amber-500">
-              {unreadCount}
+              {isLoading && enquiries.length === 0 ? "..." : unreadCount}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               Requires engineer review
@@ -150,42 +147,61 @@ export default function AdminDashboardPage() {
           </div>
 
           <Card className="border-border/60 bg-card/60 divide-y divide-border/40">
-            {recentEnquiries.map((enquiry) => (
-              <Link
-                key={enquiry.id}
-                href="/admin/enquiries"
-                className="p-4 flex items-start justify-between gap-4 hover:bg-accent/50 transition-colors block group"
-              >
-                <div className="space-y-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                      {enquiry.fullName}
-                    </span>
-                    {!enquiry.isRead && (
-                      <span className="size-2 rounded-full bg-primary" />
-                    )}
-                    <Badge variant="outline" size="sm" className="text-[0.65rem] py-0">
-                      {enquiry.company}
-                    </Badge>
+            {isLoading && enquiries.length === 0 ? (
+              <div className="p-8 text-center text-muted-foreground space-y-2">
+                <DynamicIcon name="RotateCw" size={20} className="mx-auto text-primary animate-spin" />
+                <p className="text-xs">Loading recent enquiries from Supabase...</p>
+              </div>
+            ) : recentEnquiries.length === 0 ? (
+              <div className="p-8 text-center text-muted-foreground space-y-1.5">
+                <DynamicIcon name="Mail" size={24} className="mx-auto text-muted-foreground/50" />
+                <p className="text-xs font-semibold text-foreground">No enquiries received yet</p>
+                <p className="text-[0.7rem] text-muted-foreground">
+                  New submissions from the contact form will appear here dynamically.
+                </p>
+              </div>
+            ) : (
+              recentEnquiries.map((enquiry) => (
+                <Link
+                  key={enquiry.id}
+                  href="/admin/enquiries"
+                  className="p-4 flex items-start justify-between gap-4 hover:bg-accent/50 transition-colors block group"
+                >
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                        {enquiry.fullName}
+                      </span>
+                      {!enquiry.isRead && (
+                        <span className="size-2 rounded-full bg-primary" />
+                      )}
+                      {enquiry.company && (
+                        <Badge variant="outline" size="sm" className="text-[0.65rem] py-0">
+                          {enquiry.company}
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-xs font-medium text-foreground/90 truncate">
+                      {enquiry.subject}
+                    </p>
+                    <p className="text-xs text-muted-foreground line-clamp-1">
+                      {enquiry.message}
+                    </p>
                   </div>
-                  <p className="text-xs font-medium text-foreground/90 truncate">
-                    {enquiry.subject}
-                  </p>
-                  <p className="text-xs text-muted-foreground line-clamp-1">
-                    {enquiry.message}
-                  </p>
-                </div>
 
-                <div className="text-right shrink-0">
-                  <span className="text-[0.7rem] text-muted-foreground font-mono">
-                    {enquiry.date}
-                  </span>
-                  <p className="text-[0.7rem] font-semibold text-primary mt-1">
-                    {enquiry.budget}
-                  </p>
-                </div>
-              </Link>
-            ))}
+                  <div className="text-right shrink-0">
+                    <span className="text-[0.7rem] text-muted-foreground font-mono">
+                      {enquiry.date}
+                    </span>
+                    {enquiry.budget && (
+                      <p className="text-[0.7rem] font-semibold text-primary mt-1">
+                        {enquiry.budget}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              ))
+            )}
           </Card>
         </div>
 

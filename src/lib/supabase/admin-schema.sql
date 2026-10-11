@@ -41,9 +41,9 @@ CREATE POLICY "Allow update for admin session tracking"
 -- 4. Seed initial default Administrator credentials
 INSERT INTO public.admins (name, email, password, role, "isLoggined", is_loggined)
 VALUES (
-  'Alex Mercer',
-  'admin@bitandbot.com',
-  'admin123456',
+  'Bit & Bot Admin',
+  'msafvankv786@gmail.com',
+  'admin@123',
   'super_admin',
   false,
   false
