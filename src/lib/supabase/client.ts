@@ -1,55 +1,62 @@
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
+
 /**
- * Supabase Browser Client configuration.
- * Isolates Supabase client initialization from UI components.
+ * Polyfill WebSocket in server/Node environment for @supabase/supabase-js on Node 20
  */
+if (typeof window === "undefined" && typeof globalThis.WebSocket === "undefined") {
+  // @ts-expect-error fallback dummy class for Node environment without native WebSocket
+  globalThis.WebSocket = class {}
+}
 
 export interface SupabaseConfig {
   url: string
-  anonKey: string
+  key: string
 }
 
-export function getSupabaseEnv(): SupabaseConfig | null {
+export function getSupabaseConfig(): SupabaseConfig | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const key =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!url || !anonKey) {
+  if (!url || !key) {
     return null
   }
 
-  return { url, anonKey }
+  return { url, key }
+}
+
+export function getSupabaseEnv() {
+  const config = getSupabaseConfig()
+  if (!config) return null
+  return { url: config.url, anonKey: config.key }
+}
+
+let browserClient: SupabaseClient | null = null
+
+/**
+ * Singleton client initializer for browser usage.
+ * Returns null if Supabase environment variables are missing to prevent crashes.
+ */
+export function getSupabaseBrowserClient(): SupabaseClient | null {
+  if (browserClient) return browserClient
+
+  const config = getSupabaseConfig()
+  if (!config) {
+    return null
+  }
+
+  browserClient = createClient(config.url, config.key, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  })
+
+  return browserClient
 }
 
 /**
- * Returns a configured Supabase client or null if environment variables
- * are not yet provisioned. This prevents runtime crashes during local builds.
+ * Direct export for standard usage.
  */
-export function createBrowserClient() {
-  const config = getSupabaseEnv()
-  if (!config) {
-    if (process.env.NODE_ENV === "development") {
-      console.info("Supabase credentials not configured in environment variables.")
-    }
-    return null
-  }
-
-  return {
-    config,
-    async insertSubmission(table: string, data: Record<string, unknown>) {
-      // Direct REST API fallback when client library is optional
-      const res = await fetch(`${config.url}/rest/v1/${table}`, {
-        method: "POST",
-        headers: {
-          "apikey": config.anonKey,
-          "Authorization": `Bearer ${config.anonKey}`,
-          "Content-Type": "application/json",
-          "Prefer": "return=minimal",
-        },
-        body: JSON.stringify(data),
-      })
-      if (!res.ok) {
-        throw new Error(`Failed to submit data: ${res.statusText}`)
-      }
-      return { success: true }
-    },
-  }
-}
+export const supabase = getSupabaseBrowserClient()

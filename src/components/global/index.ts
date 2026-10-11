@@ -18,3 +18,4 @@ export { SectionHeading, type SectionHeadingProps } from "@/components/ui/sectio
 export { ThemeToggle } from "@/components/ui/theme-toggle"
 export { Avatar, type AvatarProps } from "@/components/global/Avatar"
 export { DropdownMenu, type DropdownMenuProps } from "@/components/global/DropdownMenu"
+export { toast, Toaster, type ToastItem } from "@/components/ui/toast"
